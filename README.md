@@ -31,8 +31,12 @@ docker run -it \
 -e TRANSCRIBE_VMS_ONLY="..." \
 -e ADMIN_USERS="..." \
 -e ADMIN_ROLE="..." \
+-e WHISPER_MODEL="..." \
 discord-voice-message-transcriber
 ```
+
+WHISPER_MODEL available values: tiny, base, small, medium, large, tiny.en, base.en, small.en, medium.en and etc... more: https://github.com/openai/whisper
+Default WHISPER_MODEL is 'base'
 
 Only `BOT_TOKEN` variable is required, also I recommend to specify either `ADMIN_USERS` or `ADMIN_ROLE` to be able to control bot.
 So fast start will be look like:
