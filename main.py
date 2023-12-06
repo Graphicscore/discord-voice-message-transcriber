@@ -16,6 +16,7 @@ load_dotenv(".env")
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 TRANSCRIBE_ENGINE = os.getenv("TRANSCRIBE_ENGINE")
+WHISPER_MODEL = os.getenv("WHISPER_MODEL")
 TRANSCRIBE_APIKEY = os.getenv("TRANSCRIBE_APIKEY")
 TRANSCRIBE_AUTOMATICALLY = os.getenv("TRANSCRIBE_AUTOMATICALLY")
 TRANSCRIBE_VMS_ONLY = os.getenv("TRANSCRIBE_VMS_ONLY")
@@ -62,7 +63,8 @@ async def transcribe_message(message):
 	
 	# Runs the file through OpenAI Whisper (or API, if configured in config.ini)
 	if TRANSCRIBE_ENGINE == "whisper":
-		result = await client.loop.run_in_executor(None, recognizer.recognize_whisper, audio)
+		model = globals().get("WHISPER_MODEL", "base")
+		result = await client.loop.run_in_executor(None, recognizer.recognize_whisper, audio, model)
 	elif TRANSCRIBE_ENGINE == "api":
 		if TRANSCRIBE_APIKEY == "0":
 			await msg.edit("Transcription failed! (Configured to use Whisper API, but no API Key provided!)")
