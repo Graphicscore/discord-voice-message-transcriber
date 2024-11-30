@@ -101,7 +101,7 @@ async def on_message(message):
 		await transcribe_message(message)
 
 	if message.content == "!synctree" and is_manager(message):
-		await tree.sync(guild=message.guild)
+		await tree.sync()
 		await message.reply("Synced!")
 		return
 
