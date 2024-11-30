@@ -112,7 +112,8 @@ async def open_source(interaction: discord.Interaction):
 	embed = discord.Embed(
     	title="Open Source",
     	description="This bot is open source! You can find the source code "
-                    "[here](https://https://github.com/RyanCheddar/discord-voice-message-transcriber)",
+                    "[here](https://github.com/Graphicscore/discord-voice-message-transcriber)"
+					"and the original repo [here](https://github.com/RyanCheddar/discord-voice-message-transcriber)",
     	color=0x00ff00
 	)
 	await interaction.response.send_message(embed=embed)
