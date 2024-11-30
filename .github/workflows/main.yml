@@ -10,6 +10,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+      packages: write
     uses: Graphicscore/portainer-deploy-workflows/.github/workflows/actions.yml@master
     secrets:
       G_TOKEN: ${{ secrets.GITHUB_TOKEN }}
