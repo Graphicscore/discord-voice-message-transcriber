@@ -13,26 +13,15 @@ from discord import app_commands
 from dotenv import load_dotenv
 
 load_dotenv(".env")
+
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-
-config = configparser.ConfigParser()
-config.read("config.ini")
-
-if "transcribe" not in config and "admins" not in config:
-	print("Something is wrong with your config.ini file.")
-	sys.exit(1)
-
-try:
-	TRANSCRIBE_ENGINE = config["transcribe"]["engine"]
-	TRANSCRIBE_APIKEY = config["transcribe"]["apikey"]
-	TRANSCRIBE_AUTOMATICALLY = config.getboolean("transcribe", "automatically")
-	TRANSCRIBE_VMS_ONLY = config.getboolean("transcribe", "voice_messages_only")
-	ADMIN_USERS = [int(i) for i in re.split(", |,", config["admins"]["users"])]
-	ADMIN_ROLE = config.getint("admins", "role")
-
-except (configparser.NoOptionError, ValueError):
-	print("Something is wrong with your config.ini file.")
-	sys.exit(1)
+TRANSCRIBE_ENGINE = os.getenv("TRANSCRIBE_ENGINE")
+WHISPER_MODEL = os.getenv("WHISPER_MODEL")
+TRANSCRIBE_APIKEY = os.getenv("TRANSCRIBE_APIKEY")
+TRANSCRIBE_AUTOMATICALLY = os.getenv("TRANSCRIBE_AUTOMATICALLY")
+TRANSCRIBE_VMS_ONLY = os.getenv("TRANSCRIBE_VMS_ONLY")
+ADMIN_USERS = [int(i) for i in re.split(", |,", os.getenv("ADMIN_USERS"))]
+ADMIN_ROLE = os.getenv("ADMIN_ROLE")
 
 intents = discord.Intents.default()
 intents.messages = True
@@ -74,7 +63,8 @@ async def transcribe_message(message):
 	
 	# Runs the file through OpenAI Whisper (or API, if configured in config.ini)
 	if TRANSCRIBE_ENGINE == "whisper":
-		result = await client.loop.run_in_executor(None, recognizer.recognize_whisper, audio)
+		model = globals().get("WHISPER_MODEL", "base")
+		result = await client.loop.run_in_executor(None, recognizer.recognize_whisper, audio, model)
 	elif TRANSCRIBE_ENGINE == "api":
 		if TRANSCRIBE_APIKEY == "0":
 			await msg.edit("Transcription failed! (Configured to use Whisper API, but no API Key provided!)")
