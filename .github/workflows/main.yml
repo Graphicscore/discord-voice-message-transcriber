@@ -12,6 +12,7 @@ jobs:
       pull-requests: write
     uses: Graphicscore/portainer-deploy-workflows/.github/workflows/actions.yml@master
     secrets:
+      G_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PORTAINER_URL: ${{ secrets.PORTAINER_URL }}
       PORTAINER_TOKEN: ${{ secrets.PORTAINER_TOKEN }}
       CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
